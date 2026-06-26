@@ -1,1 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🌾 Fermerly 🚜</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2e1a0b 0%, #4e2d1b 50%, #2e1a0b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .offer-card {
+            background: rgba(45, 25, 15, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 2.5rem;
+            border: 1px solid rgba(255, 180, 130, 0.5);
+            padding: 2.2rem 2rem;
+            max-width: 1400px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 170, 120, 0.3) inset, 0 0 40px rgba(226, 138, 43, 0.3);
+        }
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            background: linear-gradient(135deg, #ffc77d, #ff9d6b, #ffd166);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.3rem;
+        }
+        h1 i { background: none; font-size: 2.2rem; color: #ffe0aa; filter: drop-shadow(0 0 8px #ffc77d); -webkit-text-fill-color: #ffe0aa; }
+        .sub-head {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #ffd4b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border-bottom: 1px dashed rgba(255, 180, 130, 0.5);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .popup-settings-wrapper { text-align: center; margin-bottom: 1rem; }
+        .popup-settings-btn {
+            background: linear-gradient(135deg, #ff9800, #f44336);
+            border: none;
+            border-radius: 40px;
+            padding: 12px 28px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .popup-settings-btn:hover { transform: scale(1.05); box-shadow: 0 0 35px rgba(255, 152, 0, 0.8); }
+        .popup-note { display: block; color: #ffcc80; font-size: 0.8rem; margin-top: 6px; }
+        .settings-panel {
+            background: rgba(70, 40, 20, 0.5);
+            border-radius: 20px;
+            padding: 15px 20px;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border: 1px solid #ffb47a44;
+        }
+        .settings-panel label { color: #ffe0aa; font-weight: 600; font-size: 0.95rem; white-space: nowrap; }
+        .settings-panel input {
+            width: 70px;
+            padding: 8px 12px;
+            border-radius: 30px;
+            border: 2px solid #ffc77d;
+            background: #2e1a0b;
+            color: #ffd166;
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+        .settings-panel input:focus { border-color: #ffd166; box-shadow: 0 0 12px #ffd16655; }
+        .save-btn {
+            background: linear-gradient(135deg, #d6a006, #52400d);
+            border: none;
+            border-radius: 30px;
+            padding: 8px 18px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .save-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px #d6a006; }
+        .auto-click-wrapper { text-align: center; margin-bottom: 1.5rem; }
+        .auto-click-btn {
+            background: linear-gradient(135deg, #ff9d6b, #ffc77d);
+            border: none;
+            border-radius: 60px;
+            padding: 1rem 2.5rem;
+            color: #2e1a0b;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 157, 107, 0.6);
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+        .auto-click-btn:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(255, 157, 107, 0.9); }
+        .auto-click-btn:disabled { background: #555; cursor: not-allowed; box-shadow: none; opacity: 0.6; color: #ccc; }
+        .auto-status { display: block; margin-top: 10px; color: #ffd166; font-weight: 600; font-size: 0.95rem; min-height: 22px; }
+        .click-dashboard {
+            background: rgba(70, 40, 20, 0.6);
+            border-radius: 60px;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px 25px;
+            border: 1px solid #ffb47a66;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 180, 122, 0.2);
+        }
+        .total-clicks { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.3rem; color: #fff0e2; }
+        .total-clicks i { font-size: 2rem; color: #ffd4b3; filter: drop-shadow(0 0 6px #ff9d6b); }
+        .click-badge {
+            background: #2e1a0bcc;
+            backdrop-filter: blur(4px);
+            padding: 8px 28px;
+            border-radius: 50px;
+            border: 1px solid #ffd166;
+            box-shadow: 0 0 15px #ffd16633;
+        }
+        .click-badge span { font-weight: 800; font-size: 2.2rem; color: #ffd166; margin-left: 10px; letter-spacing: 1px; }
+        .legend { display: flex; gap: 20px; font-size: 0.9rem; font-weight: 500; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-dot { width: 16px; height: 16px; border-radius: 20px; background: #dd9d4e; box-shadow: 0 0 8px #ffc77d; }
+        .legend-dot.used { background: #d6a006; box-shadow: 0 0 12px #d6a006; }
+        .btn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+        .offer-btn {
+            background: linear-gradient(135deg, #6b3c1e, #482a15);
+            border: none;
+            border-radius: 60px;
+            padding: 0.85rem 0.6rem;
+            color: #fff5ed;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 0 0 1.5px #bf7a2c inset;
+            width: 100%;
+            text-decoration: none;
+            position: relative;
+            border: 1px solid #dd9d4e55;
+        }
+        .offer-btn i { font-size: 1.2rem; color: #ffd4b3; }
+        .click-counter {
+            background: #2e1a0b;
+            border-radius: 40px;
+            padding: 2px 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #ffd166;
+            border: 1px solid #ffb347;
+            margin-left: 4px;
+        }
+        .offer-btn.clicked { background: linear-gradient(135deg, #52400d, #3b2e07); border: 1.5px solid #d6a006; box-shadow: 0 0 18px #d6a006, 0 0 0 1.5px #ffd166 inset; }
+        .offer-btn.clicked i { color: #ffea9f; }
+        .offer-btn.clicked .click-counter { background: #33280a; color: #ffeaa6; border-color: #ffd966; }
+        .offer-btn:hover { transform: translateY(-4px) scale(1.03); background: linear-gradient(135deg, #a05a2c, #6b3c1e); box-shadow: 0 18px 28px -8px black, 0 0 0 2.5px #ffe0aa inset; }
+        .section-label { font-size: 1.15rem; margin: 18px 0 8px; color: #ffe0aa; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .section-label i { color: #ffd4b3; }
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            color: #ffd0b2;
+            border-top: 1px solid #ffb47a66;
+            padding-top: 1.4rem;
+            font-size: 0.9rem;
+        }
+        .reset-link {
+            background: none;
+            border: 1.5px solid #ffe0aa;
+            padding: 8px 22px;
+            border-radius: 50px;
+            color: #fff0d6;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        .reset-link:hover { background: #ffb47a30; border-color: #ffd166; color: #ffeaaf; }
+        @media (max-width: 700px) {
+            .offer-card { padding: 1.5rem 1.2rem; }
+            h1 { font-size: 2rem; }
+            .click-dashboard { flex-direction: column; align-items: stretch; border-radius: 40px; padding: 1.2rem; }
+            .btn-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .offer-btn { padding: 0.7rem 0.5rem; font-size: 0.8rem; }
+            .auto-click-btn { font-size: 1rem; padding: 0.8rem 1.8rem; }
+            .settings-panel { flex-direction: column; gap: 10px; }
+            .popup-settings-btn { font-size: 0.9rem; padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="offer-card">
+    <h1><i class="fas fa-tractor"></i> Fermerly <i class="fas fa-seedling"></i></h1>
+    <div class="sub-head"><i class="fas fa-wheat-awn"></i> 44 FARMING OFFERS · ALL ACTIVE <i class="fas fa-cow"></i></div>
 
+    <!-- POPUP SETTINGS BUTTON -->
+    <div class="popup-settings-wrapper">
+        <button class="popup-settings-btn" onclick="openPopupSettings()"><i class="fas fa-cog"></i> ⚠️ ALLOW POPUPS FIRST (OPEN SETTINGS)</button>
+        <span class="popup-note">Click → Copy URL → Open new tab → Paste → Allow → Then START</span>
+    </div>
+
+    <!-- SETTINGS PANEL -->
+    <div class="settings-panel">
+        <label for="roundInput">🔄 ROUNDS:</label>
+        <input type="number" id="roundInput" value="3" min="1" max="100" onchange="saveRoundSetting()">
+        <button class="save-btn" onclick="saveRoundSetting()">💾 SAVE</button>
+        <span style="color:#06d6a0;font-size:0.85rem;" id="saveConfirm"></span>
+    </div>
+
+    <!-- AUTO CLICK BUTTON -->
+    <div class="auto-click-wrapper">
+        <button class="auto-click-btn" id="autoClickBtn" onclick="startAutoClick()">🚀 START AUTO CLICK</button>
+        <div class="auto-status" id="autoStatus">Ready · <span id="roundDisplay">3</span> round(s)</div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="click-dashboard">
+        <div class="total-clicks"><i class="fas fa-chart-pie"></i><span>🌽 TOTAL CLAIMS</span></div>
+        <div class="click-badge"><i class="fas fa-fingerprint"></i> <span id="globalCounter">0</span></div>
+        <div class="legend"><div class="legend-item"><span class="legend-dot"></span> available</div><div class="legend-item"><span class="legend-dot used"></span> claimed</div></div>
+    </div>
+
+    <!-- ALL 44 OFFERS (Farming Themed) -->
+    <div class="section-label"><i class="fas fa-star"></i> 🐄 FARM SUPPLIES & DEALS 🌻 <i class="fas fa-star"></i></div>
+    <div class="btn-grid" id="offerGrid">
+        <!-- 1 -->
+        <a href="https://inhaledrew.com/ahptjb51vg?key=53808dca6fdce7a15959614c9ef332be" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_1" bn="1"><i class="fas fa-seedling"></i> SEEDS SALE <span class="click-counter" id="count_1">0</span></a>
+        <!-- 2 -->
+        <a href="https://inhaledrew.com/mqhwyu5bj?key=035079576fa8daee10f69dc7956c5ef3" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_2" bn="2"><i class="fas fa-tint"></i> IRRIGATION <span class="click-counter" id="count_2">0</span></a>
+        <!-- 3 -->
+        <a href="https://inhaledrew.com/bwqqx993?key=a5a357934782301f3f17bb3ec1f01563" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_3" bn="3"><i class="fas fa-leaf"></i> FERTILIZER <span class="click-counter" id="count_3">0</span></a>
+        <!-- 4 -->
+        <a href="https://inhaledrew.com/z3jy4n7b?key=c9277ae16606904a9201878bee368b6b" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_4" bn="4"><i class="fas fa-bug"></i> PESTICIDE <span class="click-counter" id="count_4">0</span></a>
+        <!-- 5 -->
+        <a href="https://inhaledrew.com/jaj26e7k?key=8f5b1e30d781ccec554b5c4811d251b8" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_5" bn="5"><i class="fas fa-tractor"></i> TRACTOR PRO <span class="click-counter" id="count_5">0</span></a>
+        <!-- 6 -->
+        <a href="https://inhaledrew.com/x4v7u8zn92?key=5a4c9c6c2276edb992caf07c71048770" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_6" bn="6"><i class="fas fa-horse"></i> LIVESTOCK <span class="click-counter" id="count_6">0</span></a>
+        <!-- 7 -->
+        <a href="https://inhaledrew.com/h46d4xiyd?key=fb8482806373aac6e7ddaf02f80fa93e" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_7" bn="7"><i class="fas fa-cow"></i> DAIRY DEAL <span class="click-counter" id="count_7">0</span></a>
+        <!-- 8 -->
+        <a href="https://inhaledrew.com/ezjjap5yy?key=cb195d048a40a41ce3b2b5a836c32694" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_8" bn="8"><i class="fas fa-feather-alt"></i> POULTRY <span class="click-counter" id="count_8">0</span></a>
+        <!-- 9 -->
+        <a href="https://inhaledrew.com/bwnmtcff?key=c0df73f823323bc5a8f149f420ae76a9" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_9" bn="9"><i class="fas fa-fish"></i> FISH FARM <span class="click-counter" id="count_9">0</span></a>
+        <!-- 10 -->
+        <a href="https://inhaledrew.com/e7fc18xf7?key=8d96e08550626ac5674ade2fa41f72a6" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_10" bn="10"><i class="fas fa-apple-alt"></i> ORCHARD <span class="click-counter" id="count_10">0</span></a>
+        <!-- 11 -->
+        <a href="https://inhaledrew.com/srv5szcpd2?key=3bb9a18059838149ee216c47e99b9387" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_11" bn="11"><i class="fas fa-carrot"></i> VEGGIE BOX <span class="click-counter" id="count_11">0</span></a>
+        <!-- 12 -->
+        <a href="https://inhaledrew.com/br8w8pb62x?key=e172a672af3eaf1a9f770650b603ec10" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_12" bn="12"><i class="fas fa-egg"></i> EGG DEAL <span class="click-counter" id="count_12">0</span></a>
+        <!-- 13 -->
+        <a href="https://inhaledrew.com/iy5q0cq9?key=8190f71cd73e177d85ebfadef877ca44" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_13" bn="13"><i class="fas fa-cheese"></i> CHEESE <span class="click-counter" id="count_13">0</span></a>
+        <!-- 14 -->
+        <a href="https://inhaledrew.com/b47efjph?key=9294c1f1cd4805d36faeb2a17c5a62a4" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_14" bn="14"><i class="fas fa-bread-slice"></i> GRAIN SALE <span class="click-counter" id="count_14">0</span></a>
+        <!-- 15 -->
+        <a href="https://inhaledrew.com/jus3bcv4s?key=71390a69508066feaf10beed0dbe8825" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_15" bn="15"><i class="fas fa-jar"></i> HONEY POT <span class="click-counter" id="count_15">0</span></a>
+        <!-- 16 -->
+        <a href="https://inhaledrew.com/f0h2ae59w5?key=25ac000fdf20aaa55cdeba6c8fd79e9a" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_16" bn="16"><i class="fas fa-wine-bottle"></i> WINE FARM <span class="click-counter" id="count_16">0</span></a>
+        <!-- 17 -->
+        <a href="https://inhaledrew.com/kafx8t9fx?key=cfe8140cfe888ae9e3d87102a81fbc1f" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_17" bn="17"><i class="fas fa-tree"></i> TIMBER <span class="click-counter" id="count_17">0</span></a>
+        <!-- 18 -->
+        <a href="https://inhaledrew.com/d1sxpb7u?key=ef093e1e6be6e8705920484637d1e840" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_18" bn="18"><i class="fas fa-warehouse"></i> BARN SALE <span class="click-counter" id="count_18">0</span></a>
+        <!-- 19 -->
+        <a href="https://inhaledrew.com/jb522145w?key=d569c70bc2c2e3e85c6b4d0903af9ec4" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_19" bn="19"><i class="fas fa-water"></i> WELL DRILL <span class="click-counter" id="count_19">0</span></a>
+        <!-- 20 -->
+        <a href="https://inhaledrew.com/faansctx3?key=391b2f68d5abaac0ed26804bc554b90c" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_20" bn="20"><i class="fas fa-solar-panel"></i> SOLAR FARM <span class="click-counter" id="count_20">0</span></a>
+        <!-- 21 -->
+        <a href="https://inhaledrew.com/mxc7zw83?key=68e6823e3412c305cfdd916578df5a4d" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_21" bn="21"><i class="fas fa-wind"></i> WINDMILL <span class="click-counter" id="count_21">0</span></a>
+        <!-- 22 -->
+        <a href="https://inhaledrew.com/c84n65jaw4?key=71f736a5396ce450874db369090dd208" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_22" bn="22"><i class="fas fa-fence"></i> FENCING <span class="click-counter" id="count_22">0</span></a>
+        <!-- 23 -->
+        <a href="https://inhaledrew.com/ead31x2hv0?key=84cdca04d90c3b2b2456613ea1eb6ce1" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_23" bn="23"><i class="fas fa-shovel"></i> TOOLS SET <span class="click-counter" id="count_23">0</span></a>
+        <!-- 24 -->
+        <a href="https://inhaledrew.com/by1jwgbdy?key=64ce6283538161d0080e1800477c6caf" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_24" bn="24"><i class="fas fa-hard-hat"></i> WORKWEAR <span class="click-counter" id="count_24">0</span></a>
+        <!-- 25 -->
+        <a href="https://inhaledrew.com/wve6t57y4u?key=b17e67f9adc67955929019e727f9c560" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_25" bn="25"><i class="fas fa-boot"></i> BOOTS DEAL <span class="click-counter" id="count_25">0</span></a>
+        <!-- 26 -->
+        <a href="https://inhaledrew.com/u3uz319jb7?key=5ddb02514b9238ec41d58c957f534454" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_26" bn="26"><i class="fas fa-gloves"></i> GLOVES PRO <span class="click-counter" id="count_26">0</span></a>
+        <!-- 27 -->
+        <a href="https://inhaledrew.com/mkrrp7yuva?key=28aee693cc02d9add5a9d23ac06374d5" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_27" bn="27"><i class="fas fa-hat-cowboy"></i> COWBOY HAT <span class="click-counter" id="count_27">0</span></a>
+        <!-- 28 -->
+        <a href="https://inhaledrew.com/zv60pcyb?key=9583f557d58a26d9a50ccf6a70fca690" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_28" bn="28"><i class="fas fa-dog"></i> HERDING DOG <span class="click-counter" id="count_28">0</span></a>
+        <!-- 29 -->
+        <a href="https://inhaledrew.com/mkciev8y?key=2b843c6a28d1209fb05cfeb8920baec9" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_29" bn="29"><i class="fas fa-cat"></i> BARN CAT <span class="click-counter" id="count_29">0</span></a>
+        <!-- 30 -->
+        <a href="https://inhaledrew.com/yg9n2n75?key=4b2d9c3ba31a2ef84e68e5f6c7b1ff48" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_30" bn="30"><i class="fas fa-horse-head"></i> HORSE DEAL <span class="click-counter" id="count_30">0</span></a>
+        <!-- 31 -->
+        <a href="https://inhaledrew.com/jqxbrc9m6?key=661c4df264bf1bd81f8b7d6d4b244bde" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_31" bn="31"><i class="fas fa-piggy-bank"></i> PIG FARM <span class="click-counter" id="count_31">0</span></a>
+        <!-- 32 -->
+        <a href="https://inhaledrew.com/hsqzj7bje?key=5556cd8568517ef55d126ee8a835ad9c" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_32" bn="32"><i class="fas fa-drumstick-bite"></i> MEAT PACK <span class="click-counter" id="count_32">0</span></a>
+        <!-- 33 -->
+        <a href="https://inhaledrew.com/e74ua3wd82?key=12638540ac1bf9b767925c6b4009575c" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_33" bn="33"><i class="fas fa-pepper-hot"></i> SPICE FARM <span class="click-counter" id="count_33">0</span></a>
+        <!-- 34 -->
+        <a href="https://inhaledrew.com/v930c0ba?key=a8a08135ff23ef7bbf8315706fdf5598" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_34" bn="34"><i class="fas fa-coffee"></i> COFFEE BEAN <span class="click-counter" id="count_34">0</span></a>
+        <!-- 35 -->
+        <a href="https://inhaledrew.com/cpxy8imi4n?key=1dbc2b32db319417545fc7185f9bb159" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_35" bn="35"><i class="fas fa-cannabis"></i> HEMP FARM <span class="click-counter" id="count_35">0</span></a>
+        <!-- 36 -->
+        <a href="https://inhaledrew.com/a80i9yjt?key=673aee578dfe4a4a1661330a3545c4db" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_36" bn="36"><i class="fas fa-flower"></i> FLOWER FARM <span class="click-counter" id="count_36">0</span></a>
+        <!-- 37 -->
+        <a href="https://inhaledrew.com/t91r4g9aq?key=0dbedb57a760b079f9f68b0dd4235503" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_37" bn="37"><i class="fas fa-plant-wilt"></i> COTTON DEAL <span class="click-counter" id="count_37">0</span></a>
+        <!-- 38 -->
+        <a href="https://inhaledrew.com/qz1u2pmq?key=7ad14eb4be09d41c64600fe09df4307b" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_38" bn="38"><i class="fas fa-oil-can"></i> FUEL OFFER <span class="click-counter" id="count_38">0</span></a>
+        <!-- 39 -->
+        <a href="https://inhaledrew.com/w96zt4h8?key=d8fb243c63ba6ba5b38490d8374dd479" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_39" bn="39"><i class="fas fa-truck"></i> FARM TRUCK <span class="click-counter" id="count_39">0</span></a>
+        <!-- 40 -->
+        <a href="https://inhaledrew.com/qqd9zrgb2?key=c03b392953d375f4ad98d775226da0cd" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_40" bn="40"><i class="fas fa-trailer"></i> TRAILER <span class="click-counter" id="count_40">0</span></a>
+        <!-- 41 -->
+        <a href="https://inhaledrew.com/dw31jnmy?key=d630cba5ef4509f40f623882b3f9912b" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_41" bn="41"><i class="fas fa-store"></i> FARM MARKET <span class="click-counter" id="count_41">0</span></a>
+        <!-- 42 -->
+        <a href="https://inhaledrew.com/e638cihr?key=0eb81d4e77d3c076cb6dc20d5d65102d" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_42" bn="42"><i class="fas fa-boxes"></i> BULK ORDER <span class="click-counter" id="count_42">0</span></a>
+        <!-- 43 -->
+        <a href="https://inhaledrew.com/qngjmrs0k?key=fd24f7f1c18da171b85a23e2639e6d5b" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_43" bn="43"><i class="fas fa-book"></i> FARM GUIDE <span class="click-counter" id="count_43">0</span></a>
+        <!-- 44 -->
+        <a href="https://inhaledrew.com/hk2s47jkrn?key=ce1cd69de0b09cc6ec4d4e2ce8f761a7" target="_blank" rel="noopener noreferrer" class="offer-btn" id="btn_44" bn="44"><i class="fas fa-certificate"></i> ORGANIC CERT <span class="click-counter" id="count_44">0</span></a>
+    </div>
+
+    <div class="card-footer">
+        <span><i class="far fa-clock"></i> 44 active farming deals · instant access</span>
+        <div class="reset-link" onclick="resetAllCounters()"><i class="fas fa-arrows-rotate"></i> reset counters</div>
+    </div>
+</div>
+
+<script>
+    const btnsTotal = 44;
+    let cMap = {};
+    for (let i=1; i<=btnsTotal; i++) cMap['btn_'+i] = 0;
+    const STORE = 'farming_44_v1', RKEY = 'auto_rounds_farming_v1';
+
+    function lCounts() { try { let s=localStorage.getItem(STORE); if(s) { let p=JSON.parse(s); for(let k in cMap) if(typeof p[k]==='number') cMap[k]=p[k]; } } catch(e){} }
+    function sCounts() { try { localStorage.setItem(STORE, JSON.stringify(cMap)); } catch(e){} }
+    function total() { return Object.values(cMap).reduce((a,b)=>a+b,0); }
+
+    function refresh() {
+        document.getElementById('globalCounter').innerText = total();
+        for (let i=1; i<=btnsTotal; i++) {
+            let cs = document.getElementById('count_'+i), b = document.getElementById('btn_'+i);
+            if (cs && b) { let v = cMap['btn_'+i]||0; cs.innerText = v; v>0 ? b.classList.add('clicked') : b.classList.remove('clicked'); }
+        }
+    }
+
+    function inc(id) { if(cMap.hasOwnProperty(id)) { cMap[id]++; refresh(); sCounts(); } }
+
+    function resetAllCounters() { for (let i=1; i<=btnsTotal; i++) cMap['btn_'+i] = 0; refresh(); sCounts(); }
+
+    function openPopupSettings() {
+        let a = window.open('about:blank', '_blank');
+        if(a){a.document.write(`<html><head><title>Allow Popups</title><style>body{font-family:sans-serif;background:#2e1a0b;color:#fff;text-align:center;padding:40px;line-height:1.8;}.steps{background:#4e2d1b;padding:25px;border-radius:15px;display:inline-block;text-align:left;margin:20px;}.highlight{color:#ffd166;font-weight:bold;}code{background:#000;padding:4px 10px;border-radius:6px;color:#ffd166;font-size:16px;}button{background:#ff9d6b;color:#2e1a0b;border:none;padding:12px 30px;border-radius:30px;font-size:16px;cursor:pointer;margin-top:15px;font-weight:bold;}</style></head><body><h1>🔓 Allow Popups</h1><div class="steps"><p>📋 <span class="highlight">Step 1:</span> Copy URL:</p><p><code>chrome://settings/content/popups</code></p><p>📌 <span class="highlight">Step 2:</span> Open new tab (Ctrl+T)</p><p>📎 <span class="highlight">Step 3:</span> Paste & Enter</p><p>🔍 <span class="highlight">Step 4:</span> Allow this site</p><p>🔄 <span class="highlight">Step 5:</span> Come back & START</p></div><button onclick="navigator.clipboard.writeText('chrome://settings/content/popups').then(function(){}).catch(function(){})">📋 COPY SETTINGS URL</button></body></html>`);a.document.close();}
+    }
+
+    function gRounds() { try { let s=localStorage.getItem(RKEY); return s ? parseInt(s) : 3; } catch(e){ return 3; } }
+    function saveRoundSetting() {
+        let inp = document.getElementById('roundInput'), cf = document.getElementById('saveConfirm');
+        let v = parseInt(inp.value); if(isNaN(v)||v<1) v=1; if(v>100) v=100;
+        inp.value = v; localStorage.setItem(RKEY, v);
+        document.getElementById('roundDisplay').innerText = v;
+        cf.innerText = '✅ Saved: '+v+' round(s)'; setTimeout(()=>cf.innerText='',2000);
+    }
+    function loadRounds() { let r = gRounds(); document.getElementById('roundInput').value = r; document.getElementById('roundDisplay').innerText = r; }
+
+    let running = false;
+    function startAutoClick() {
+        if(running){alert('⚠️ Already running!');return;}
+        let btns = document.querySelectorAll('.offer-btn');
+        if(!btns.length){alert('❌ No buttons!');return;}
+        let rds = gRounds(), all = btns.length * rds;
+        let st = document.getElementById('autoStatus'), sBtn = document.getElementById('autoClickBtn');
+        running = true; sBtn.disabled = true; sBtn.textContent = '⏳ CLICKING...';
+        let cur = 0, round = 1, idx = 0;
+        st.textContent = '🔄 Round 1/'+rds+' · 0/'+all;
+        let t = setInterval(() => {
+            if(round>rds){clearInterval(t);st.textContent='✅ DONE! '+all+' clicks ('+btns.length+'×'+rds+')';sBtn.disabled=false;sBtn.textContent='🚀 START AUTO CLICK';running=false;return;}
+            if(idx>=btns.length){round++;idx=0;if(round>rds)return;st.textContent='🔄 Round '+round+'/'+rds+' · '+cur+'/'+all;return;}
+            let b=btns[idx],bid=b.id,url=b.href||b.getAttribute('href');
+            if(url){let a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';document.body.appendChild(a);a.click();document.body.removeChild(a);cur++;if(bid&&cMap.hasOwnProperty(bid))inc(bid);st.textContent='🔄 R'+round+'/'+rds+' · #'+cur+'/'+all+' ✅';}
+            else{cur++;st.textContent='🔄 R'+round+'/'+rds+' · #'+cur+'/'+all+' ⚠️';}
+            idx++;
+        },2000);
+    }
+
+    for(let i=1;i<=btnsTotal;i++){let b=document.getElementById('btn_'+i);if(b)b.addEventListener('click',()=>inc('btn_'+i));}
+    lCounts();loadRounds();refresh();
+    console.log('✅ 44 farming btns | Rounds: '+gRounds());
+</script>
+</body>
+</html>
